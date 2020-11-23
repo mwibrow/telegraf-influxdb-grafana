@@ -1,0 +1,23 @@
+# # config file version
+apiVersion: 1
+
+# # list of datasources that should be deleted from the database
+deleteDatasources:
+
+datasources:  
+- name: influxdb
+  type: influxdb 
+  access: proxy
+  orgId: 1
+  uid: influxdb
+  url: "http://$TIMESERIES_DB_HOST:$TIMESERIES_DB_HOST"
+  user: "$DASHBOARD_USER"
+  secureJsonData:
+    password: "$DASHBOARD_USER_PASSWORD"
+  database: "$TIMESERIES_DB"
+  basicAuth: false
+  isDefault: true
+  jsonData:
+    sslmode: disable
+  editable: false
+  version: 1  

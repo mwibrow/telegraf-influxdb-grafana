@@ -1,0 +1,61 @@
+version: "3.5"
+
+services:
+  grafana:
+    networks:
+      - default
+    build:
+      context: grafana/
+    depends_on:
+      - telegraf
+    env_file: 
+      - .env
+    volumes:
+      - ./grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/:ro
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini:rw
+    restart: always
+    container_name: grafana
+    image: grafana
+    ports:
+      - 3000:3000
+  telegraf:
+    networks:
+      - default
+    build:
+      context: telegraf
+      dockerfile: Dockerfile
+    depends_on: 
+        - influxdb
+    env_file: 
+      - .env
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    restart: always
+    container_name: telegraf
+    image: telegraf
+    ports:
+      - 8125:8125/udp
+      - 8092:8092/udp
+      - 8094:8094
+  influxdb:
+    networks:
+      - default
+    build:
+      context: influxdb
+      dockerfile: Dockerfile
+    env_file: 
+      - .env
+    volumes:
+      - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ./influxdb/initdb.d/:/docker-entrypoint-initdb.d/
+    restart: always
+    container_name: influxdb
+    image: influxdb
+    ports:
+      - 8086:8086
+    
+  
+networks:
+  default:
+    name: telegraf
+      
