@@ -10,7 +10,7 @@ datasources:
   access: proxy
   orgId: 1
   uid: influxdb
-  url: "http://$TIMESERIES_DB_HOST:$TIMESERIES_DB_HOST"
+  url: "http://$TIMESERIES_DB_HOST:$TIMESERIES_DB_PORT"
   user: "$DASHBOARD_USER"
   secureJsonData:
     password: "$DASHBOARD_USER_PASSWORD"
